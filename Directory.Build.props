@@ -1,0 +1,27 @@
+<Project>
+    <PropertyGroup>
+        <_ParentDirectoryBuildPropsPath Condition="'$(_DirectoryBuildPropsFile)' != ''">$([System.IO.Path]::Combine('..', '$(_DirectoryBuildPropsFile)'))</_ParentDirectoryBuildPropsPath>
+    </PropertyGroup>
+    <Import Project="$(_ParentDirectoryBuildPropsPath)" Condition="Exists('$(_ParentDirectoryBuildPropsPath)')"/>
+    <PropertyGroup>
+        <WarningLevel>3</WarningLevel>
+        <AnalysisLevel>preview</AnalysisLevel>
+        <Features>strict</Features>
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    </PropertyGroup>
+    <PropertyGroup>
+        <CompatibilityTargetFrameworks>netstandard2.0</CompatibilityTargetFrameworks>
+        <DefaultTargetFrameworks>net8.0</DefaultTargetFrameworks>
+        <LangVersion>preview</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup>
+        <IsPackable>true</IsPackable>
+    </PropertyGroup>
+    <PropertyGroup>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+    <PropertyGroup>
+        <SourceLinkCreate>true</SourceLinkCreate>
+        <SourceLinkOriginUrl>https://github.com/mumby0168/intergalactic-azure-cosmos-client</SourceLinkOriginUrl>
+    </PropertyGroup>
+</Project>
