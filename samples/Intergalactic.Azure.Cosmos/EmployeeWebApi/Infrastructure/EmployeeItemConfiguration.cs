@@ -16,4 +16,7 @@ public class EmployeeItemConfiguration : ICosmosItemConfiguration<EmployeeItem>
     public Expression<Func<EmployeeItem, bool>> LogicalPartitionQuery(
         string partitionKey) =>
         employee => employee.StoreNumber == partitionKey;
+
+    public string PartitionKeyValue(EmployeeItem item) => item.StoreNumber;
+    public bool IsEtagsEnabled => true;
 }

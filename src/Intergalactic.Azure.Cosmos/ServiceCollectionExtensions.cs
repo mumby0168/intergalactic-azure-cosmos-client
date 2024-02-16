@@ -3,7 +3,6 @@
 
 using Azure.Core;
 using Intergalactic.Azure.Cosmos.Containers;
-using Intergalactic.Azure.Cosmos.Internals;
 using Intergalactic.Azure.Cosmos.Internals.Builders;
 using Intergalactic.Azure.Cosmos.Internals.Containers;
 using Intergalactic.Azure.Cosmos.Internals.Items.Configuration;
@@ -57,12 +56,11 @@ public static class ServiceCollectionExtensions
             typeof(ICosmosItemConfiguration<>),
             typeof(DefaultCosmosItemConfiguration<>));
 
-        services.AddSingleton<ICosmosRepositoryClient, CosmosRepositoryClient>();
         services.AddSingleton<IItemConfiguration, DefaultItemConfiguration>();
         services.AddSingleton<IItemContainerProvider, DefaultItemContainerProvider>();
-        services.AddSingleton<IRepository, DefaultRepository>();
-        services.AddSingleton<IReadonlyRepository>(sp => sp.GetRequiredService<IRepository>());
-        services.AddSingleton<IWriteOnlyRepository>(sp => sp.GetRequiredService<IRepository>());
+        services.AddSingleton<IIntergalacticCosmosClient, DefaultIntergalacticCosmosClient>();
+        services.AddSingleton<IReadonlyIntergalacticCosmosClient>(sp => sp.GetRequiredService<IIntergalacticCosmosClient>());
+        services.AddSingleton<IWriteOnlyIntergalacticCosmosClient>(sp => sp.GetRequiredService<IIntergalacticCosmosClient>());
 
         services.AddCosmosClient(
             configuration,

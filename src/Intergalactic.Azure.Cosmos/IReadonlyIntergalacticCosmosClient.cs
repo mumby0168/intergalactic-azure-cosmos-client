@@ -6,7 +6,7 @@ using Intergalactic.Azure.Cosmos.Items;
 
 namespace Intergalactic.Azure.Cosmos;
 
-public interface IReadonlyRepository
+public interface IReadonlyIntergalacticCosmosClient
 {
     ValueTask<TItem> PointReadAsync<TItem>(
         string id,

@@ -10,4 +10,8 @@ public interface ICosmosItemConfiguration<TItem> where TItem : IItem
 
     Expression<Func<TItem, bool>> LogicalPartitionQuery(
         string partitionKey);
+
+    string PartitionKeyValue(TItem item);
+
+    bool IsEtagsEnabled { get; }
 }

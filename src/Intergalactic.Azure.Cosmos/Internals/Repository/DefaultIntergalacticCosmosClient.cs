@@ -10,9 +10,9 @@ using Microsoft.Azure.Cosmos.Linq;
 
 namespace Intergalactic.Azure.Cosmos.Internals.Repository;
 
-public class DefaultRepository(
+public class DefaultIntergalacticCosmosClient(
     IItemContainerProvider containerProvider,
-    IItemConfiguration itemConfiguration) : IRepository
+    IItemConfiguration itemConfiguration) : IIntergalacticCosmosClient
 {
     public ValueTask<TItem> PointReadAsync<TItem>(
         string id,
@@ -153,16 +153,19 @@ public class DefaultRepository(
         TItem item,
         CancellationToken cancellationToken = default)  where TItem : class, IItem
     {
+        ICosmosItemConfiguration<TItem> configuration = itemConfiguration.For<TItem>();
         Container container = await containerProvider.GetContainerAsync<TItem>(cancellationToken);
 
-        ItemRequestOptions requestOptions = new()
+        ItemRequestOptions options = new();
+
+        if (configuration.IsEtagsEnabled)
         {
-            IfMatchEtag = string.IsNullOrWhiteSpace(item.Etag) ? default : item.Etag
-        };
+            options.IfMatchEtag = item.Etag;
+        }
 
         await container.UpsertItemAsync(
             item,
-            requestOptions: requestOptions,
+            requestOptions: options,
             cancellationToken: cancellationToken);
     }
 
@@ -177,5 +180,89 @@ public class DefaultRepository(
             id,
             new PartitionKey(partitionKey),
             cancellationToken: cancellationToken);
+    }
+
+    public async ValueTask<TransactionalBatchResponse> UpdateAsBatchAsync<TItem>(
+        IEnumerable<TItem> items,
+        CancellationToken cancellationToken = default) where TItem : IItem
+    {
+        ICosmosItemConfiguration<TItem> configuration = itemConfiguration.For<TItem>();
+        var list = items.ToList();
+
+        var partitionKeyValue = configuration.PartitionKeyValue(list.First());
+
+        Container container = await containerProvider.GetContainerAsync<TItem>(cancellationToken);
+
+        TransactionalBatch batch = container.CreateTransactionalBatch(new PartitionKey(partitionKeyValue));
+
+        foreach (TItem item in list)
+        {
+            TransactionalBatchItemRequestOptions options = new();
+
+            if (configuration.IsEtagsEnabled)
+            {
+                options.IfMatchEtag = item.Etag;
+            }
+
+            batch.UpsertItem(item, options);
+        }
+
+        return await batch.ExecuteAsync(cancellationToken);
+    }
+
+    public async ValueTask<TransactionalBatchResponse> CreateAsBatchAsync<TItem>(
+        IEnumerable<TItem> items,
+        CancellationToken cancellationToken = default) where TItem : IItem
+    {
+        ICosmosItemConfiguration<TItem> configuration = itemConfiguration.For<TItem>();
+        var list = items.ToList();
+
+        var partitionKeyValue = configuration.PartitionKeyValue(list.First());
+
+        Container container = await containerProvider.GetContainerAsync<TItem>(cancellationToken);
+
+        TransactionalBatch batch = container.CreateTransactionalBatch(new PartitionKey(partitionKeyValue));
+
+        foreach (TItem item in list)
+        {
+            TransactionalBatchItemRequestOptions options = new();
+
+            if (configuration.IsEtagsEnabled)
+            {
+                options.IfMatchEtag = item.Etag;
+            }
+
+            batch.CreateItem(item, options);
+        }
+
+        return await batch.ExecuteAsync(cancellationToken);
+    }
+
+    public async ValueTask<TransactionalBatchResponse> DeleteAsBatchAsync<TItem>(
+        IEnumerable<TItem> items,
+        CancellationToken cancellationToken = default) where TItem : IItem
+    {
+        ICosmosItemConfiguration<TItem> configuration = itemConfiguration.For<TItem>();
+        var list = items.ToList();
+
+        var partitionKeyValue = configuration.PartitionKeyValue(list.First());
+
+        Container container = await containerProvider.GetContainerAsync<TItem>(cancellationToken);
+
+        TransactionalBatch batch = container.CreateTransactionalBatch(new PartitionKey(partitionKeyValue));
+
+        foreach (TItem item in list)
+        {
+            TransactionalBatchItemRequestOptions options = new();
+
+            if (configuration.IsEtagsEnabled)
+            {
+                options.IfMatchEtag = item.Etag;
+            }
+
+            batch.DeleteItem(item.Id, options);
+        }
+
+        return await batch.ExecuteAsync(cancellationToken);
     }
 }

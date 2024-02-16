@@ -5,7 +5,7 @@ using Intergalactic.Azure.Cosmos.Items;
 
 namespace Intergalactic.Azure.Cosmos;
 
-public interface IWriteOnlyRepository
+public interface IWriteOnlyIntergalacticCosmosClient
 {
     ValueTask CreateAsync<TItem>(
         TItem item,

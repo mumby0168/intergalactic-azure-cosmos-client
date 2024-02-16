@@ -37,7 +37,7 @@ public static class EmployeeEndpoints
     }
 
     private static async Task<IResult> SeedRandomEmployeesAsync(
-        IWriteOnlyRepository repository,
+        IWriteOnlyIntergalacticCosmosClient intergalacticCosmosClient,
         CancellationToken cancellationToken = default)
     {
         try
@@ -46,7 +46,7 @@ public static class EmployeeEndpoints
 
             foreach (EmployeeItem employee in employees)
             {
-                await repository.CreateAsync(
+                await intergalacticCosmosClient.CreateAsync(
                     employee,
                     cancellationToken);
             }
@@ -64,13 +64,13 @@ public static class EmployeeEndpoints
     }
 
     private static async Task<IResult> GetCustomersByStoreNumberAsync(
-        IReadonlyRepository repository,
+        IReadonlyIntergalacticCosmosClient intergalacticCosmosClient,
         string storeNumber,
         CancellationToken cancellationToken = default)
     {
         try
         {
-            IEnumerable<EmployeeItem> employees = await repository
+            IEnumerable<EmployeeItem> employees = await intergalacticCosmosClient
                 .QueryLogicalPartitionAsync<EmployeeItem>(
                     storeNumber,
                     cancellationToken: cancellationToken);
@@ -88,14 +88,14 @@ public static class EmployeeEndpoints
     }
 
     private static async Task<IResult> GetCustomerForStoreAsync(
-        IReadonlyRepository repository,
+        IReadonlyIntergalacticCosmosClient intergalacticCosmosClient,
         string storeNumber,
         string id,
         CancellationToken cancellationToken = default)
     {
         try
         {
-            EmployeeItem? employee = await repository
+            EmployeeItem? employee = await intergalacticCosmosClient
                 .TryPointReadAsync<EmployeeItem>(
                     id,
                     storeNumber,
@@ -116,13 +116,13 @@ public static class EmployeeEndpoints
     }
 
     private static async Task<IResult> UpdateCustomerForStoreAsync(
-        IWriteOnlyRepository repository,
+        IWriteOnlyIntergalacticCosmosClient intergalacticCosmosClient,
         EmployeeItem employee,
         CancellationToken cancellationToken = default)
     {
         try
         {
-            await repository.CreateOrUpdateAsync(
+            await intergalacticCosmosClient.CreateOrUpdateAsync(
                 employee,
                 cancellationToken);
 
@@ -139,14 +139,14 @@ public static class EmployeeEndpoints
     }
 
     private static async Task<IResult> DeleteCustomerForStoreAsync(
-        IWriteOnlyRepository repository,
+        IWriteOnlyIntergalacticCosmosClient intergalacticCosmosClient,
         string storeNumber,
         string id,
         CancellationToken cancellationToken = default)
     {
         try
         {
-            await repository.DeleteAsync<EmployeeItem>(
+            await intergalacticCosmosClient.DeleteAsync<EmployeeItem>(
                 id,
                 storeNumber,
                 cancellationToken);

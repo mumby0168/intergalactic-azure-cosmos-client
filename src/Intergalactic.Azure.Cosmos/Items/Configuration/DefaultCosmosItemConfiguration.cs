@@ -16,4 +16,8 @@ public class DefaultCosmosItemConfiguration<TItem>(
     public Expression<Func<TItem, bool>> LogicalPartitionQuery(
         string partitionKey) =>
         i => i.Id == partitionKey;
+
+    public string PartitionKeyValue(TItem item) => item.Id;
+
+    public bool IsEtagsEnabled => true;
 }

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 namespace Intergalactic.Azure.Cosmos.Internals.Containers;
 
 internal class DefaultItemContainerProvider(
-    ICosmosRepositoryClient cosmosRepositoryClient,
+    CosmosClient client,
     IOptionsMonitor<IntergalacticAzureCosmosOptions> optionsMonitor,
     IItemConfiguration itemConfiguration) : IItemContainerProvider
 {
@@ -24,14 +24,18 @@ internal class DefaultItemContainerProvider(
 
         if (_settings.IsAutomaticResourceCreationEnabled)
         {
-            container = await cosmosRepositoryClient.CreateContainerAndDatabaseIfNotExistsAsync(
+            Database database = await client.CreateDatabaseIfNotExistsAsync(
                 _settings.DatabaseName,
+                cancellationToken: cancellationToken);
+
+            container = await database.CreateContainerIfNotExistsAsync(
                 configuration.ContainerId,
-                configuration.PartitionKeyPath);
+                configuration.PartitionKeyPath,
+                cancellationToken: cancellationToken);
         }
         else
         {
-            container = cosmosRepositoryClient.GetContainer(
+            container = client.GetContainer(
                 _settings.DatabaseName,
                 configuration.ContainerId);
         }
