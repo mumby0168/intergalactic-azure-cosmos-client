@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intergalactic.Azure.Cosmos.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intergalactic.Azure.Cosmos.AcceptanceTests", "tests\Intergalactic.Azure.Cosmos.AcceptanceTests\Intergalactic.Azure.Cosmos.AcceptanceTests.csproj", "{8D84828D-AB90-4353-886C-FF7A94597487}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{08775ACB-0261-4B1E-81B5-7B257527F248}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Intergalactic.Azure.Cosmos", "Intergalactic.Azure.Cosmos", "{73D97C3F-3B55-4F76-B2ED-4FB746144007}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeWebApi", "samples\Intergalactic.Azure.Cosmos\EmployeeWebApi\EmployeeWebApi.csproj", "{80EDA52B-8235-4BBA-98DB-9D30BCBAE4C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,10 +40,16 @@ Global
 		{8D84828D-AB90-4353-886C-FF7A94597487}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D84828D-AB90-4353-886C-FF7A94597487}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D84828D-AB90-4353-886C-FF7A94597487}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80EDA52B-8235-4BBA-98DB-9D30BCBAE4C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80EDA52B-8235-4BBA-98DB-9D30BCBAE4C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80EDA52B-8235-4BBA-98DB-9D30BCBAE4C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80EDA52B-8235-4BBA-98DB-9D30BCBAE4C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1B135600-C669-43AA-94A4-8B796CD20F22} = {DB0B0CE8-2758-47D3-9BA5-F6D1FC566BF6}
 		{81FB84BD-4B0D-47BF-91EA-D998F58F57DF} = {9FA22A88-6DB1-4705-B5AA-597F6D2C5F8F}
 		{8D84828D-AB90-4353-886C-FF7A94597487} = {9FA22A88-6DB1-4705-B5AA-597F6D2C5F8F}
+		{73D97C3F-3B55-4F76-B2ED-4FB746144007} = {08775ACB-0261-4B1E-81B5-7B257527F248}
+		{80EDA52B-8235-4BBA-98DB-9D30BCBAE4C0} = {73D97C3F-3B55-4F76-B2ED-4FB746144007}
 	EndGlobalSection
 EndGlobal

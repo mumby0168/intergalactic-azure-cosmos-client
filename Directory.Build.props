@@ -8,6 +8,7 @@
         <AnalysisLevel>preview</AnalysisLevel>
         <Features>strict</Features>
         <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+        <Nullable>Enable</Nullable>
     </PropertyGroup>
     <PropertyGroup>
         <CompatibilityTargetFrameworks>netstandard2.0</CompatibilityTargetFrameworks>
